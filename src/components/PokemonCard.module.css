@@ -1,0 +1,86 @@
+.card {
+  background-color: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.cardBackground {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 150px;
+  height: 150px;
+  background-color: currentColor;
+  opacity: 0.1;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.imageContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 16px;
+  z-index: 1;
+}
+
+.image {
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+}
+
+.id {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 4px;
+  z-index: 1;
+  align-self: flex-start;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  z-index: 1;
+}
+
+.types {
+  display: flex;
+  gap: 8px;
+  z-index: 1;
+  margin-top: auto;
+}
+
+.typeBadge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: capitalize;
+}
+
+.skeletonCard {
+  height: 250px;
+}

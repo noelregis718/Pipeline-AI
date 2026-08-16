@@ -1,0 +1,114 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PokéAPI Subset (Pokémon Explorer)",
+    "description": "API documentation for the PokéAPI endpoints consumed by the Pokémon Explorer application.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://pokeapi.co/api/v2",
+      "description": "Public PokéAPI Server"
+    }
+  ],
+  "paths": {
+    "/pokemon": {
+      "get": {
+        "summary": "Get a list of Pokémon",
+        "description": "Returns a paginated list of Pokémon.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/pokemon/{nameOrId}": {
+      "get": {
+        "summary": "Get detailed Pokémon info",
+        "description": "Returns detailed information about a specific Pokémon by name or ID.",
+        "parameters": [
+          {
+            "name": "nameOrId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "404": {
+            "description": "Pokémon not found"
+          }
+        }
+      }
+    },
+    "/type": {
+      "get": {
+        "summary": "Get a list of Pokémon Types",
+        "description": "Returns a list of all Pokémon elemental types.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/type/{typeName}": {
+      "get": {
+        "summary": "Get Pokémon by Type",
+        "description": "Returns detailed information about a type, including all Pokémon that have this type.",
+        "parameters": [
+          {
+            "name": "typeName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}
