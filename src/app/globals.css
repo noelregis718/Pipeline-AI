@@ -64,6 +64,13 @@ button {
   font-family: inherit;
 }
 
+/* Accessibility: Focus Styles */
+*:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Skeleton Loading Animation */
 @keyframes shimmer {
   0% {

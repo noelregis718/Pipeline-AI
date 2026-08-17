@@ -1,0 +1,144 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background-color: var(--bg-primary);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 600px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 0;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.comparison {
+  display: flex;
+  flex-direction: column;
+}
+
+.headers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.headerItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.pokeName {
+  margin-top: 12px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.vs {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  padding: 0 16px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statLabel {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.statVal {
+  flex: 1;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+}
+
+.statVal:first-child { justify-content: flex-end; }
+.statVal:last-child { justify-content: flex-start; }
+
+.winner {
+  color: #10b981;
+}
+
+@media (max-width: 600px) {
+  .modal { padding: 24px 16px; }
+  .pokeName { font-size: 1.25rem; }
+  .stats { padding: 16px; }
+  .statVal { font-size: 1rem; }
+}

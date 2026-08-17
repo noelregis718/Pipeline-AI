@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { fetchTypes } from '../services/pokeapi';
 import styles from './TypeFilter.module.css';
 
@@ -11,12 +11,13 @@ interface TypeFilterProps {
 
 export default function TypeFilter({ selectedType, onTypeSelect }: TypeFilterProps) {
   const [types, setTypes] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadTypes = async () => {
       try {
         const data = await fetchTypes();
-        // Filter out some non-pokemon types returned by the API
         const validTypes = data.results
           .map(t => t.name)
           .filter(t => t !== 'unknown' && t !== 'shadow');
@@ -26,28 +27,49 @@ export default function TypeFilter({ selectedType, onTypeSelect }: TypeFilterPro
       }
     };
     loadTypes();
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.dropdownContainer} ref={containerRef}>
       <button 
-        className={`${styles.typeBtn} ${selectedType === null ? styles.active : ''}`}
-        style={selectedType === null ? { backgroundColor: 'var(--text-primary)' } : {}}
-        onClick={() => onTypeSelect(null)}
+        className={styles.dropdownButton} 
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
       >
-        All
+        <span>Filter: {selectedType ? selectedType : 'All'}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
-      
-      {types.map(type => (
-        <button
-          key={type}
-          className={`${styles.typeBtn} ${selectedType === type ? styles.active : ''}`}
-          style={selectedType === type ? { backgroundColor: `var(--type-${type})` } : {}}
-          onClick={() => onTypeSelect(type)}
-        >
-          {type}
-        </button>
-      ))}
+
+      {isOpen && (
+        <div className={styles.dropdownMenu}>
+          <button 
+            className={`${styles.typeBtn} ${selectedType === null ? styles.active : ''}`}
+            onClick={() => { onTypeSelect(null); setIsOpen(false); }}
+            style={selectedType === null ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-primary)' } : {}}
+          >
+            All
+          </button>
+          
+          {types.map(type => (
+            <button
+              key={type}
+              className={`${styles.typeBtn} ${selectedType === type ? styles.active : ''}`}
+              style={selectedType === type ? { backgroundColor: `var(--type-${type})`, color: 'white', borderColor: 'transparent' } : {}}
+              onClick={() => { onTypeSelect(type); setIsOpen(false); }}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { Pokemon } from '../../../types/pokemon';
 import { fetchPokemonDetails } from '../../../services/pokeapi';
 import { formatPokemonId, capitalize } from '../../../utils/format';
+import { useFavorites } from '../../../hooks/useFavorites';
+import ThemeToggle from '../../../components/ThemeToggle';
 import styles from './page.module.css';
 
 export default function PokemonDetails() {
@@ -16,6 +18,7 @@ export default function PokemonDetails() {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
 
   useEffect(() => {
     const loadDetails = async () => {
@@ -32,6 +35,21 @@ export default function PokemonDetails() {
       loadDetails();
     }
   }, [name]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') router.back();
+      if (pokemon) {
+        if (e.key === 'ArrowRight') {
+          router.push(`/pokemon/${pokemon.id + 1}`);
+        } else if (e.key === 'ArrowLeft' && pokemon.id > 1) {
+          router.push(`/pokemon/${pokemon.id - 1}`);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [router, pokemon]);
 
   if (loading) {
     return (
@@ -54,22 +72,44 @@ export default function PokemonDetails() {
   }
 
   const primaryType = pokemon.types[0].type.name;
-  const image = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+  const rawImage = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+  const image = rawImage ? rawImage.replace('raw.githubusercontent.com/PokeAPI/sprites/master', 'cdn.jsdelivr.net/gh/PokeAPI/sprites@master') : null;
 
   return (
     <div className={styles.container}>
-      <button onClick={() => router.back()} className={styles.backBtn} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-        <ArrowLeft size={20} /> Back
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <button onClick={() => router.back()} className={styles.backBtn} style={{ background: 'none', border: 'none', cursor: 'pointer', marginBottom: 0 }}>
+          <ArrowLeft size={20} /> Back
+        </button>
+        <ThemeToggle />
+      </div>
 
       <div className={styles.card}>
         <div 
           className={styles.header}
           style={{ backgroundColor: `var(--type-${primaryType})`, color: 'white' }}
         >
-          <div className={styles.id}>{formatPokemonId(pokemon.id)}</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className={styles.id} style={{ marginBottom: 0 }}>{formatPokemonId(pokemon.id)}</div>
+            {isLoaded && (
+              <button 
+                onClick={() => toggleFavorite(pokemon.name)}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: isFavorite(pokemon.name) ? '#ef4444' : 'rgba(255,255,255,0.7)',
+                  transition: 'transform 0.2s',
+                  transform: 'scale(1)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                aria-label="Toggle Favorite"
+              >
+                <Heart fill={isFavorite(pokemon.name) ? '#ef4444' : 'none'} size={32} />
+              </button>
+            )}
+          </div>
           
-          <div className={styles.imageWrapper}>
+          <div className={styles.imageWrapper} style={{ position: 'relative' }}>
             {image && (
               <Image 
                 src={image}
@@ -78,6 +118,7 @@ export default function PokemonDetails() {
                 sizes="200px"
                 className={styles.image}
                 priority
+                unoptimized={true}
               />
             )}
           </div>
@@ -137,6 +178,17 @@ export default function PokemonDetails() {
                 <div key={ability.ability.name} className={styles.abilityBadge}>
                   {ability.ability.name.replace('-', ' ')}
                   {ability.is_hidden && ' (Hidden)'}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.movesSection}>
+            <h2 className={styles.sectionTitle}>Moves</h2>
+            <div className={styles.movesContainer}>
+              {pokemon.moves.map((moveInfo) => (
+                <div key={moveInfo.move.name} className={styles.moveBadge}>
+                  {moveInfo.move.name.replace(/-/g, ' ')}
                 </div>
               ))}
             </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AriaAnnouncer from "../components/AriaAnnouncer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light">
       <body>
+        <AriaAnnouncer />
         {children}
       </body>
     </html>

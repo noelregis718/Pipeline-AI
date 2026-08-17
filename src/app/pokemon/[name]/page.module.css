@@ -166,3 +166,36 @@
   font-weight: 600;
   text-transform: capitalize;
 }
+
+.movesSection {
+  margin-top: 40px;
+}
+
+.movesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: var(--bg-primary);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.moveBadge {
+  background-color: var(--bg-secondary);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  text-transform: capitalize;
+  transition: all 0.2s ease;
+}
+
+.moveBadge:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}

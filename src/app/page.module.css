@@ -1,5 +1,26 @@
 .main {
+  min-height: 100vh;
   padding: 40px 0;
+  position: relative;
+}
+
+.skipLink {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  z-index: 9999;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: top 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.skipLink:focus {
+  top: 20px;
 }
 
 .header {
@@ -21,6 +42,15 @@
 
 .controls {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

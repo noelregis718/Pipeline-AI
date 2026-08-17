@@ -1,18 +1,33 @@
 'use client';
 
-import { useState } from 'react';
 import { Search } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import styles from './SearchBar.module.css';
-import { useRouter } from 'next/navigation';
 
-export default function SearchBar() {
-  const [query, setQuery] = useState('');
-  const router = useRouter();
+interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: () => void;
+}
+
+export default function SearchBar({ value, onChange, onSubmit }: SearchBarProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleSlash = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleSlash);
+    return () => window.removeEventListener('keydown', handleSlash);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/pokemon/${query.trim().toLowerCase()}`);
+    if (value.trim()) {
+      onSubmit();
     }
   };
 
@@ -20,11 +35,12 @@ export default function SearchBar() {
     <form className={styles.searchContainer} onSubmit={handleSearch}>
       <Search className={styles.icon} size={20} />
       <input
+        ref={inputRef}
         type="text"
         className={styles.input}
         placeholder="Search Pokémon..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
       />
       <button type="submit" className={styles.button}>
         Search
