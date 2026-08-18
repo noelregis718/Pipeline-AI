@@ -2,6 +2,17 @@
 
 A beautifully designed, highly interactive web application built with **Next.js** and **TypeScript** that allows users to explore the vast world of Pokémon using the public PokéAPI.
 
+## Screenshots
+
+### 1. Interactive Explorer Landing Page
+![Landing Page](public/5.png)
+
+### 2. Side-by-Side Stat Comparison
+![Comparison Modal](public/6.png)
+
+### 3. Detailed Pokémon Overview
+![Detailed Overview](public/7.png)
+
 ## Features
 
 - **Dynamic Grid Interface:** View a beautiful grid of Pokémon cards, complete with official artwork and dynamic coloring based on their primary elemental type.
