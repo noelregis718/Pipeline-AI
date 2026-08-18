@@ -125,21 +125,6 @@ export default function PokemonCard({ name, selectedSort, isComparing, onToggleC
         <h2 className={styles.name} style={{ color: 'var(--text-primary)', marginBottom: 0 }}>
           {capitalize(pokemon.name)}
         </h2>
-        {selectedSort && ['Attack', 'Speed', 'HP'].includes(selectedSort) && (
-          <span style={{ 
-            fontSize: '0.7rem', 
-            fontWeight: 800, 
-            padding: '2px 8px', 
-            borderRadius: '12px', 
-            backgroundColor: `var(--type-${primaryType})`, 
-            color: 'white',
-            display: 'inline-flex',
-            alignItems: 'center',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}>
-            {selectedSort.substring(0,3).toUpperCase()} {pokemon.stats.find(s => s.stat.name === selectedSort.toLowerCase())?.base_stat || 0}
-          </span>
-        )}
       </div>
 
       <div className={styles.types}>
@@ -152,6 +137,22 @@ export default function PokemonCard({ name, selectedSort, isComparing, onToggleC
             {typeInfo.type.name}
           </span>
         ))}
+        {selectedSort && ['Attack', 'Speed', 'HP'].includes(selectedSort) && (
+          <span style={{ 
+            fontSize: '0.75rem', 
+            fontWeight: 800, 
+            padding: '4px 12px', 
+            borderRadius: '16px', 
+            backgroundColor: `var(--type-${primaryType})`, 
+            color: 'white',
+            display: 'inline-flex',
+            alignItems: 'center',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            textTransform: 'uppercase'
+          }}>
+            {selectedSort.substring(0,3)} {pokemon.stats.find(s => s.stat.name === selectedSort.toLowerCase())?.base_stat || 0}
+          </span>
+        )}
       </div>
     </Link>
   );
