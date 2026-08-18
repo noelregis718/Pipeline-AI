@@ -141,6 +141,11 @@ export default function Home() {
   const getErrorMessage = () => {
     const sortText = selectedSort !== 'ID' ? ` (Sorted by ${selectedSort})` : '';
     
+    const isNumeric = !isNaN(Number(searchQuery.trim())) && searchQuery.trim() !== '';
+    if (isNumeric) {
+      return `Please search by Pokémon name (letters only), not by ID numbers.`;
+    }
+
     if (searchQuery.trim() && selectedType) {
       return `No ${selectedType} type Pokémon match "${searchQuery.trim()}"${sortText}.`;
     }
