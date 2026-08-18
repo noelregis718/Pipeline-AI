@@ -138,6 +138,19 @@ export default function Home() {
   const visibleNames = processedNames.slice(0, visibleCount);
   const currentHasMore = visibleCount < processedNames.length;
 
+  const getErrorMessage = () => {
+    if (searchQuery.trim() && selectedType) {
+      return `No ${selectedType} type Pokémon match "${searchQuery.trim()}".`;
+    }
+    if (searchQuery.trim()) {
+      return `No Pokémon found matching "${searchQuery.trim()}". Please check your spelling.`;
+    }
+    if (selectedType) {
+      return `No ${selectedType} type Pokémon found.`;
+    }
+    return 'No Pokémon found.';
+  };
+
   return (
     <main className={styles.main}>
       <a href="#pokemon-grid" className={styles.skipLink}>Skip to Pokémon Grid</a>
@@ -169,13 +182,13 @@ export default function Home() {
         ) : enterError ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-secondary)' }}>
             <p style={{ fontSize: '1.25rem' }}>
-              Pokémon not found. Please check your spelling.
+              {getErrorMessage()}
             </p>
           </div>
         ) : processedNames.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-secondary)' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', color: 'var(--text-primary)' }}>Oops!</h2>
-            <p>Pokémon not found. Please check your spelling.</p>
+            <p>{getErrorMessage()}</p>
           </div>
         ) : (
           <PokemonGrid 
