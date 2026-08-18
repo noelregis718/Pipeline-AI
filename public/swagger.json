@@ -55,7 +55,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^([a-z-]+|[1-9][0-9]*)$"
             }
           }
         ],
@@ -101,7 +102,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^[a-z]+$"
             }
           }
         ],
