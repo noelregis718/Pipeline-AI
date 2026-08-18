@@ -139,16 +139,18 @@ export default function Home() {
   const currentHasMore = visibleCount < processedNames.length;
 
   const getErrorMessage = () => {
+    const sortText = selectedSort !== 'ID' ? ` (Sorted by ${selectedSort})` : '';
+    
     if (searchQuery.trim() && selectedType) {
-      return `No ${selectedType} type Pokémon match "${searchQuery.trim()}".`;
+      return `No ${selectedType} type Pokémon match "${searchQuery.trim()}"${sortText}.`;
     }
     if (searchQuery.trim()) {
-      return `No Pokémon found matching "${searchQuery.trim()}". Please check your spelling.`;
+      return `No Pokémon found matching "${searchQuery.trim()}"${sortText}. Please check your spelling.`;
     }
     if (selectedType) {
-      return `No ${selectedType} type Pokémon found.`;
+      return `No ${selectedType} type Pokémon found${sortText}.`;
     }
-    return 'No Pokémon found.';
+    return `No Pokémon found${sortText}.`;
   };
 
   return (
