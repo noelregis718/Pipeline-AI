@@ -72,33 +72,6 @@ src/
     └── pokemon.ts         # Strict TypeScript Interfaces
 ```
 
-### Data Flow & Architecture Diagrams
-
-**UML Component Diagram:**
-```mermaid
-classDiagram
-    class Page {
-      +searchQuery: string
-      +selectedType: string
-      +compareQueue: string[]
-    }
-    Page --> SearchBar
-    Page --> TypeFilter
-    Page --> PokemonGrid
-    Page --> CompareTray
-    PokemonGrid --> PokemonCard
-```
-
-**Data Flow Diagram (DFD):**
-```mermaid
-graph LR
-    User([User Input]) --> SearchBar
-    SearchBar --> |Search Query| PageState[(React State)]
-    PageState --> |Trigger Fetch| PokemonAPI[[External PokéAPI]]
-    PokemonAPI --> |Return JSON Data| PageState
-    PageState --> |Render Filtered Data| PokemonGrid
-```
-
 ## Challenges Faced
 
 1. **Global Sorting vs. API Rate Limits:** The rubric requested the ability to sort *all* Pokémon by stats like Attack, Speed, and HP. However, the PokéAPI `/pokemon` list endpoint does not return stat data, and fetching individual stat profiles for 1,300+ Pokémon dynamically triggered `ECONNRESET` rate-limiting blocks.
